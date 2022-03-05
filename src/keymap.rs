@@ -1,7 +1,11 @@
+use phf;
+use phf::phf_map;
+
 #[allow(unused)]
 #[derive(Clone,Copy)]
 #[repr(u8)]
 pub enum Modifier {
+    None = 0x00,
     LCtl = 0x01,
     LShift = 0x02,
     LAlt = 0x04,
@@ -16,6 +20,7 @@ pub enum Modifier {
 #[derive(Clone,Copy)]
 #[repr(u8)]
 pub enum Keys {
+    None = 0x00,
     KeyA = 0x04,
     KeyB = 0x05,
     KeyC = 0x06,
@@ -72,4 +77,49 @@ pub enum Keys {
     KeyDot = 0x37,
     KeySlash = 0x38,
     KeyCapslock = 0x39,
+}
+
+static KEYS: phf::Map<&'static str, Keys> = phf_map! {
+    "a" => Keys::KeyA,
+    "b" => Keys::KeyB,
+    "c" => Keys::KeyC,
+    "d" => Keys::KeyD,
+    "e" => Keys::KeyE,
+    "f" => Keys::KeyF,
+    "g" => Keys::KeyG,
+    "h" => Keys::KeyH,
+    "i" => Keys::KeyI,
+    "j" => Keys::KeyJ,
+    "k" => Keys::KeyK,
+    "l" => Keys::KeyL,
+    "m" => Keys::KeyM,
+    "n" => Keys::KeyN,
+    "o" => Keys::KeyO,
+    "p" => Keys::KeyP,
+    "q" => Keys::KeyQ,
+    "r" => Keys::KeyR,
+    "s" => Keys::KeyS,
+    "t" => Keys::KeyT,
+    "u" => Keys::KeyU,
+    "v" => Keys::KeyV,
+    "w" => Keys::KeyW,
+    "x" => Keys::KeyX,
+    "y" => Keys::KeyY,
+    "z" => Keys::KeyZ,
+
+    "1" => Keys::Key1,
+    "2" => Keys::Key2,
+    "3" => Keys::Key3,
+    "4" => Keys::Key4,
+    "5" => Keys::Key5,
+    "6" => Keys::Key6,
+    "7" => Keys::Key7,
+    "8" => Keys::Key8,
+    "9" => Keys::Key9,
+    "0" => Keys::Key0,
+};
+
+
+pub fn parse_char(character: &str) -> Option<Keys> {
+    KEYS.get(character).cloned()
 }
