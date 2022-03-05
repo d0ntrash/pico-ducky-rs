@@ -135,14 +135,41 @@ fn main() -> ! {
     delay.delay_ms(100);
     loop {
         send_keystroke(keymap::Modifier::None, keymap::parse_char(&'a').unwrap(), &mut delay);
-        send_string("this is a string 123 even with s0me=symblos/", &mut delay);
+        send_string("this is a String 123+eVen wiTh s0me=symblos/", &mut delay);
         delay.delay_ms(100);
     }
 }
 
 fn send_string(send_string: &str, delay: &mut Delay) {
-    for c in send_string.chars() {
-        send_keystroke(keymap::Modifier::None, keymap::parse_char(&c).unwrap(), delay);
+    for mut c in send_string.chars() {
+
+        if c.is_ascii_punctuation() {
+            match keymap::parse_lower_punctuation(&c) {
+                Some(k) => {
+                    send_keystroke(keymap::Modifier::None, k , delay);
+                    continue;
+                },
+                None => ()
+            }
+            match keymap::parse_upper_punctuation(&c) {
+                Some(k) => {
+                    send_keystroke(keymap::Modifier::LShift, k , delay);
+                    continue;
+                },
+                None => ()
+            }
+        } else {
+            let modifier = if c.is_ascii_lowercase() || c.is_ascii_digit() {
+                keymap::Modifier::None
+            } else {
+                c = c.to_ascii_lowercase();
+                keymap::Modifier::LShift
+            };
+            match keymap::parse_char(&c) {
+                Some(k) => send_keystroke(modifier, k, delay),
+                None => ()
+            }
+        }
     }
     delay.delay_ms(1000)
 }

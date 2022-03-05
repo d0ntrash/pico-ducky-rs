@@ -121,6 +121,9 @@ static KEYS: phf::Map<char, Keys> = phf_map! {
     '0' => Keys::Key0,
 
     ' ' => Keys::KeySpace,
+};
+
+static LOWERCASE_PUNCTUATION: phf::Map<char, Keys> = phf_map! {
     '-' => Keys::KeyMinus,
     '=' => Keys::KeyEqual,
     '[' => Keys::KeyLeftBrace,
@@ -134,6 +137,28 @@ static KEYS: phf::Map<char, Keys> = phf_map! {
     '/' => Keys::KeySlash,
 };
 
+static UPPERCASE_PUNCTUATION: phf::Map<char, Keys> = phf_map! {
+    '_' => Keys::KeyMinus,
+    '+' => Keys::KeyEqual,
+    '{' => Keys::KeyLeftBrace,
+    '}' => Keys::KeyRightBrace,
+    '|' => Keys::KeyBackslash,
+    '#' => Keys::KeyHashTilde,
+    ':' => Keys::KeySemicolon,
+    '"' => Keys::KeyApostrophe,
+    '<' => Keys::KeyComma,
+    '>' => Keys::KeyDot,
+    '?' => Keys::KeySlash,
+};
+
 pub fn parse_char(character: &char) -> Option<Keys> {
     KEYS.get(character).cloned()
+}
+
+pub fn parse_lower_punctuation(character: &char) -> Option<Keys> {
+    LOWERCASE_PUNCTUATION.get(character).cloned()
+}
+
+pub fn parse_upper_punctuation(character: &char) -> Option<Keys> {
+    UPPERCASE_PUNCTUATION.get(character).cloned()
 }
