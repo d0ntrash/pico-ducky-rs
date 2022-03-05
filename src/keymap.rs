@@ -1,6 +1,8 @@
 use phf;
 use phf::phf_map;
 
+// Mapping taken from here: https://gist.github.com/ekaitz-zarraga/2b25b94b711684ba4e969e5a5723969b
+
 #[allow(unused)]
 #[derive(Clone,Copy)]
 #[repr(u8)]
@@ -117,8 +119,20 @@ static KEYS: phf::Map<char, Keys> = phf_map! {
     '8' => Keys::Key8,
     '9' => Keys::Key9,
     '0' => Keys::Key0,
-};
 
+    ' ' => Keys::KeySpace,
+    '-' => Keys::KeyMinus,
+    '=' => Keys::KeyEqual,
+    '[' => Keys::KeyLeftBrace,
+    ']' => Keys::KeyRightBrace,
+    '\\' => Keys::KeyBackslash,
+    '#' => Keys::KeyHashTilde,
+    ';' => Keys::KeySemicolon,
+    '\'' => Keys::KeyApostrophe,
+    ',' => Keys::KeyComma,
+    '.' => Keys::KeyDot,
+    '/' => Keys::KeySlash,
+};
 
 pub fn parse_char(character: &char) -> Option<Keys> {
     KEYS.get(character).cloned()

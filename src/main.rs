@@ -131,11 +131,11 @@ fn main() -> ! {
     let mut delay = cortex_m::delay::Delay::new(core.SYST, clocks.system_clock.freq().integer());
     delay.delay_ms(1000);
     // Move the cursor up and down every 200ms
-    send_keystroke(keymap::Modifier::LMeta, keymap::Keys::KeyEnter, &mut delay);
+    //send_keystroke(keymap::Modifier::LMeta, keymap::Keys::KeyEnter, &mut delay);
     delay.delay_ms(100);
     loop {
         send_keystroke(keymap::Modifier::None, keymap::parse_char(&'a').unwrap(), &mut delay);
-        send_string("thisisastring123", &mut delay);
+        send_string("this is a string 123 even with s0me=symblos/", &mut delay);
         delay.delay_ms(100);
     }
 }
