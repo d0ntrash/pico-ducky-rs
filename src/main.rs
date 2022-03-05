@@ -14,6 +14,7 @@
 #![no_std]
 #![no_main]
 
+use cortex_m::delay::Delay;
 // The macro for our start-up function
 use cortex_m_rt::entry;
 
@@ -128,20 +129,44 @@ fn main() -> ! {
     };
     let core = pac::CorePeripherals::take().unwrap();
     let mut delay = cortex_m::delay::Delay::new(core.SYST, clocks.system_clock.freq().integer());
-
+    delay.delay_ms(1000);
     // Move the cursor up and down every 200ms
+    send_keystroke(keymap::Modifier::LMeta, keymap::Keys::KeyEnter, &mut delay);
+    delay.delay_ms(100);
     loop {
+        send_keystroke(keymap::Modifier::None, keymap::parse_char(&'a').unwrap(), &mut delay);
+        send_string("thisisastring123", &mut delay);
         delay.delay_ms(100);
-
-        let press_a = KeyboardReport {
-            modifier: keymap::Modifier::LShift as u8,
-            reserved: 0x00,
-            leds: 0x00,
-            keycodes: [keymap::Keys::KeyB as u8, 0x00, 0x00, 0x00, 0x00, 0x00]
-        };
-
-        push_keyboard_input(press_a).ok().unwrap_or(0);
     }
+}
+
+fn send_string(send_string: &str, delay: &mut Delay) {
+    for c in send_string.chars() {
+        send_keystroke(keymap::Modifier::None, keymap::parse_char(&c).unwrap(), delay);
+    }
+    delay.delay_ms(1000)
+}
+
+fn send_keystroke(modifier: keymap::Modifier, keycode: keymap::Keys, delay: &mut Delay) {
+    delay.delay_ms(40);
+    // Build and send key report
+    let keystroke = KeyboardReport {
+        modifier: modifier as u8,
+        reserved: 0x00,
+        leds: 0x00,
+        keycodes: [keycode as u8, 0x00, 0x00, 0x00, 0x00, 0x00]
+    };
+    push_keyboard_input(keystroke).ok().unwrap_or(0);
+    delay.delay_ms(40);
+
+    // Build and send reset report
+    let reset = KeyboardReport {
+        modifier: 0x00,
+        reserved: 0x00,
+        leds: 0x00,
+        keycodes: [0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+    };
+    push_keyboard_input(reset).ok().unwrap_or(0);
 }
 
 fn push_keyboard_input(report: KeyboardReport) -> Result<usize, usb_device::UsbError> {
