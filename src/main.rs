@@ -42,8 +42,9 @@ use usb_device::{class_prelude::*, prelude::*};
 use usbd_hid::descriptor::KeyboardReport;
 // USB Human Interface Device (HID) Class support
 use usbd_hid::descriptor::generator_prelude::*;
-use usbd_hid::descriptor::MouseReport;
 use usbd_hid::hid_class::HIDClass;
+
+mod keymap;
 
 /// The USB Device Driver (shared with the interrupt).
 static mut USB_DEVICE: Option<UsbDevice<hal::usb::UsbBus>> = None;
@@ -133,10 +134,10 @@ fn main() -> ! {
         delay.delay_ms(100);
 
         let press_a = KeyboardReport {
-            modifier: 0x00,
+            modifier: keymap::Modifier::LShift as u8,
             reserved: 0x00,
             leds: 0x00,
-            keycodes: [0x04, 0x04, 0x04, 0x04, 0x04, 0x04]
+            keycodes: [keymap::Keys::KeyB as u8, 0x00, 0x00, 0x00, 0x00, 0x00]
         };
 
         push_keyboard_input(press_a).ok().unwrap_or(0);

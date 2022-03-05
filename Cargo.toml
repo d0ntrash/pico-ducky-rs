@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 rp-pico = "0.2.0"
 cortex-m = "0.7.2"
+keycode = "0.3.0"
 rp2040-boot2 = { version = "0.2.0", optional = true }
 rp2040-hal = { git = "https://github.com/rp-rs/rp-hal", branch="main", features=["rt"] }
 cortex-m-rt = { version = "0.7" }

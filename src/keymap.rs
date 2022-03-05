@@ -1,0 +1,75 @@
+#[allow(unused)]
+#[derive(Clone,Copy)]
+#[repr(u8)]
+pub enum Modifier {
+    LCtl = 0x01,
+    LShift = 0x02,
+    LAlt = 0x04,
+    LMeta = 0x08,
+    RCtl = 0x10,
+    RShift = 0x20,
+    RAlt = 0x40,
+    RMeta = 0x80
+}
+
+#[allow(unused)]
+#[derive(Clone,Copy)]
+#[repr(u8)]
+pub enum Keys {
+    KeyA = 0x04,
+    KeyB = 0x05,
+    KeyC = 0x06,
+    KeyD = 0x07,
+    KeyE = 0x08,
+    KeyF = 0x09,
+    KeyG = 0x0a,
+    KeyH = 0x0b,
+    KeyI = 0x0c,
+    KeyJ = 0x0d,
+    KeyK = 0x0e,
+    KeyL = 0x0f,
+    KeyM = 0x10,
+    KeyN = 0x11,
+    KeyO = 0x12,
+    KeyP = 0x13,
+    KeyQ = 0x14,
+    KeyR = 0x15,
+    KeyS = 0x16,
+    KeyT = 0x17,
+    KeyU = 0x18,
+    KeyV = 0x19,
+    KeyW = 0x1a,
+    KeyX = 0x1b,
+    KeyY = 0x1c,
+    KeyZ = 0x1d,
+
+    Key1 = 0x1e,
+    Key2 = 0x1f,
+    Key3 = 0x20,
+    Key4 = 0x21,
+    Key5 = 0x22,
+    Key6 = 0x23,
+    Key7 = 0x24,
+    Key8 = 0x25,
+    Key9 = 0x26,
+    Key0 = 0x27,
+
+    KeyEnter = 0x28,
+    KeyEsc = 0x29,
+    KeyBackspace = 0x2a,
+    KeyTab = 0x2b,
+    KeySpace = 0x2c,
+    KeyMinus = 0x2d,
+    KeyEqual = 0x2e,
+    KeyLeftBrace = 0x2f,
+    KeyRightBrace = 0x30,
+    KeyBackslash = 0x31,
+    KeyHashTilde = 0x32,
+    KeySemicolon = 0x33,
+    KeyApostrophe = 0x34,
+    KeyGrave = 0x35,
+    KeyComma = 0x36,
+    KeyDot = 0x37,
+    KeySlash = 0x38,
+    KeyCapslock = 0x39,
+}
