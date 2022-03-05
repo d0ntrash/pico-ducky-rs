@@ -39,6 +39,7 @@ use rp_pico::hal;
 // USB Device support
 use usb_device::{class_prelude::*, prelude::*};
 
+use usbd_hid::descriptor::KeyboardReport;
 // USB Human Interface Device (HID) Class support
 use usbd_hid::descriptor::generator_prelude::*;
 use usbd_hid::descriptor::MouseReport;
@@ -102,7 +103,7 @@ fn main() -> ! {
     let bus_ref = unsafe { USB_BUS.as_ref().unwrap() };
 
     // Set up the USB HID Class Device driver, providing Mouse Reports
-    let usb_hid = HIDClass::new(bus_ref, MouseReport::desc(), 60);
+    let usb_hid = HIDClass::new(bus_ref, KeyboardReport::desc(), 60);
     unsafe {
         // Note (safety): This is safe as interrupts haven't been started yet.
         USB_HID = Some(usb_hid);
@@ -131,32 +132,18 @@ fn main() -> ! {
     loop {
         delay.delay_ms(100);
 
-        let rep_up = MouseReport {
-            x: 0,
-            y: 4,
-            buttons: 0,
-            wheel: 0,
-            pan: 0,
+        let press_a = KeyboardReport {
+            modifier: 0x00,
+            reserved: 0x00,
+            leds: 0x00,
+            keycodes: [0x04, 0x04, 0x04, 0x04, 0x04, 0x04]
         };
-        push_mouse_movement(rep_up).ok().unwrap_or(0);
 
-        delay.delay_ms(100);
-
-        let rep_down = MouseReport {
-            x: 0,
-            y: -4,
-            buttons: 0,
-            wheel: 0,
-            pan: 0,
-        };
-        push_mouse_movement(rep_down).ok().unwrap_or(0);
+        push_keyboard_input(press_a).ok().unwrap_or(0);
     }
 }
 
-/// Submit a new mouse movement report to the USB stack.
-///
-/// We do this with interrupts disabled, to avoid a race hazard with the USB IRQ.
-fn push_mouse_movement(report: MouseReport) -> Result<usize, usb_device::UsbError> {
+fn push_keyboard_input(report: KeyboardReport) -> Result<usize, usb_device::UsbError> {
     cortex_m::interrupt::free(|_| unsafe {
         // Now interrupts are disabled, grab the global variable and, if
         // available, send it a HID report
