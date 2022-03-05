@@ -135,7 +135,7 @@ fn main() -> ! {
     delay.delay_ms(100);
     loop {
         send_keystroke(keymap::Modifier::None, keymap::parse_char(&'a').unwrap(), &mut delay);
-        send_string("this is a String 123+eVen wiTh s0me=symblos/", &mut delay);
+        send_string("!@#$%^&*()_+{}|:\"<>?-=[]\\;',./", &mut delay);
         delay.delay_ms(100);
     }
 }
