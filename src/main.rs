@@ -112,9 +112,10 @@ fn main() -> ! {
     }
 
     // Create a USB device with a fake VID and PID
+    // This might be helpful to circumvent basic USB device control
     let usb_dev = UsbDeviceBuilder::new(bus_ref, UsbVidPid(0x1337, 0x1337))
         .manufacturer("d0ntrash")
-        .product("Rubber Ducky")
+        .product("Pico Rubber Ducky")
         .serial_number("1337")
         .device_class(0xEF) // misc
         .build();
@@ -131,9 +132,13 @@ fn main() -> ! {
     let mut delay = cortex_m::delay::Delay::new(core.SYST, clocks.system_clock.freq().integer());
     delay.delay_ms(1000);
     loop {
-        // send_keystroke(keymap::Modifier::None, keymap::parse_char(&'a').unwrap(), &mut delay);
-        // Write teststring
-        send_string("!@#$%^&*()_+{}|:\"<>?-=[]\\;',./", &mut delay);
+        // Basic example:
+        // Open a cmd and type whoami
+        send_keystroke(keymap::Modifier::LMeta, keymap::parse_char(&'r').unwrap(), &mut delay);
+        send_string("cmd", &mut delay);
+        send_keystroke(keymap::Modifier::None, keymap::Keys::KeyEnter, &mut delay);
+        send_string("whoami", &mut delay);
+        send_keystroke(keymap::Modifier::None, keymap::Keys::KeyEnter, &mut delay);
         delay.delay_ms(100);
     }
 }
