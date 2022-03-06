@@ -130,11 +130,9 @@ fn main() -> ! {
     let core = pac::CorePeripherals::take().unwrap();
     let mut delay = cortex_m::delay::Delay::new(core.SYST, clocks.system_clock.freq().integer());
     delay.delay_ms(1000);
-    // Move the cursor up and down every 200ms
-    //send_keystroke(keymap::Modifier::LMeta, keymap::Keys::KeyEnter, &mut delay);
-    delay.delay_ms(100);
     loop {
-        send_keystroke(keymap::Modifier::None, keymap::parse_char(&'a').unwrap(), &mut delay);
+        // send_keystroke(keymap::Modifier::None, keymap::parse_char(&'a').unwrap(), &mut delay);
+        // Write teststring
         send_string("!@#$%^&*()_+{}|:\"<>?-=[]\\;',./", &mut delay);
         delay.delay_ms(100);
     }
@@ -142,10 +140,11 @@ fn main() -> ! {
 
 fn send_string(send_string: &str, delay: &mut Delay) {
     for mut c in send_string.chars() {
-
         if c.is_ascii_punctuation() {
+            // Check if shift modifier is required
             match keymap::parse_lower_punctuation(&c) {
                 Some(k) => {
+                    // Send key without shift modifier
                     send_keystroke(keymap::Modifier::None, k , delay);
                     continue;
                 },
@@ -153,6 +152,7 @@ fn send_string(send_string: &str, delay: &mut Delay) {
             }
             match keymap::parse_upper_punctuation(&c) {
                 Some(k) => {
+                    // Send key with shift modifier
                     send_keystroke(keymap::Modifier::LShift, k , delay);
                     continue;
                 },

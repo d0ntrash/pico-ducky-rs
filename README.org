@@ -1,0 +1,3 @@
+#+TITLE: pico-ducky-rs
+#+AUTHOR: d0ntrash
+** Raspberry Pi Pico Rubber Ducky PoC written in Rust (WIP)
